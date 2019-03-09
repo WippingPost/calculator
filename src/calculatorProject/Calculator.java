@@ -33,7 +33,7 @@ public class Calculator {
 			splitExpression.add(temp[0]);
 			try {
 				splitExpression.add(temp[1]);
-			} catch (IndexOutOfBoundsException e) {
+			} catch (Exception e) {
 			}
 		}
 
@@ -54,18 +54,36 @@ public class Calculator {
 			if (splitExpression.get(i).contains("*")) {
 				try {
 					d1 = Double.parseDouble(splitExpression.get(i - 1));
-					d2 = Double.parseDouble(splitExpression.get(i + 1));
 
-					// multiplicerar d1 o d2
-					result = multiply(d1, d2);
+					// Kollar vad för tecken som kommer efter
+					if (splitExpression.get(i + 1).equals("+")) {
+						splitExpression.remove(i + 1);
+						i--;	// Ställ tillbaka pekaren igen
+					} else if (splitExpression.get(i + 1).equals("-")) {
+						if (splitExpression.get(i + 2).equals("-")) {
 
-					// Lägger till result till listan samt raderar förbrukade poster
-					splitExpression.set(i - 1, result.toString());
-					splitExpression.remove(i);
-					splitExpression.remove(i);
-					i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
+						} else {
+							d2 = (Double.parseDouble(splitExpression.get(i + 2)) * - 1);
+							splitExpression.set(i + 1, d2.toString());
+							splitExpression.remove(i + 2);
+							i--;	// Ställ tillbaka pekaren igen
+							d2 = 0.0;
+						}
+					} else {
+						d2 = Double.parseDouble(splitExpression.get(i + 1));
+
+						// multiplicerar d1 o d2
+						result = multiply(d1, d2);
+
+						// Lägger till result till listan samt raderar förbrukade poster
+						splitExpression.set(i - 1, result.toString());
+						splitExpression.remove(i);
+						splitExpression.remove(i);
+						i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
+					}
+
 				} catch (Exception e) {
-					// TODO
+					throw new Exception(e);
 				}
 			}
 
@@ -74,18 +92,39 @@ public class Calculator {
 			if (splitExpression.get(i).contains("/")) {
 				try {
 					d1 = Double.parseDouble(splitExpression.get(i - 1));
-					d2 = Double.parseDouble(splitExpression.get(i + 1));
 
-					// Dividerar d1 o d2
-					result = divide(d1, d2);
+					// Kollar vad för tecken som kommer efter
+					if (splitExpression.get(i + 1).equals("+")) {
+						splitExpression.remove(i + 1);
+						i--;	// Ställ tillbaka pekaren igen
+					} else if (splitExpression.get(i + 1).equals("-")) {
+						if (splitExpression.get(i + 2).equals("-")) {
 
-					// Lägger till result till listan samt raderar förbrukade poster
-					splitExpression.set(i - 1, result.toString());
-					splitExpression.remove(i);
-					splitExpression.remove(i);
-					i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
+						} else {
+							d2 = (Double.parseDouble(splitExpression.get(i + 2)) * - 1);
+							splitExpression.set(i + 1, d2.toString());
+							splitExpression.remove(i + 2);
+							i--;	// Ställ tillbaka pekaren igen
+							d2 = 0.0;
+						}
+					} else {
+						d2 = Double.parseDouble(splitExpression.get(i + 1));
+
+						// Dividerar d1 o d2
+						result = divide(d1, d2);
+
+						// Lägger till result till listan samt raderar förbrukade poster
+						splitExpression.set(i - 1, result.toString());
+						splitExpression.remove(i);
+						splitExpression.remove(i);
+						i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
+					}
 				} catch (Exception e) {
-					// TODO
+					if (e.toString().contains("ArithmeticException")) {
+						throw new ArithmeticException();
+					} else {
+						throw new Exception(e);
+					}
 				}
 			}
 
@@ -104,8 +143,12 @@ public class Calculator {
 					splitExpression.remove(i);
 					splitExpression.remove(i);
 					i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
-				} catch (Exception e) {
-					// TODO
+				} catch (Exception e){
+					if (e.toString().contains("ArithmeticException")) {
+						throw new ArithmeticException();
+					} else {
+						throw new Exception(e);
+					}
 				}
 			}
 		}
@@ -113,14 +156,7 @@ public class Calculator {
 
 		//System.out.println("Efter multiplikation/division: " + splitExpression);
 
-		// Kollar så att listan inte slutar med en operatör
-		switch (splitExpression.get(splitExpression.size()-1)) {
-		case "*":
-		case "/":
-		case "+":
-		case "-":
-			throw new Exception("Felaktig avslutning på uttryck!");
-		}
+
 
 		// Nu har vi en färdig lista att bara summera ihop
 
@@ -133,29 +169,41 @@ public class Calculator {
 
 		} else {
 
-			for (int i = 0; i < splitExpression.size() - 1; i++) {
+			for (int i = 0; i < splitExpression.size(); i++) {
 
 				// Kollar först om vi har en siffra eller en operatör (utifall uttrycket börjar med en operatör (- eller +))
 				if (splitExpression.get(i).equals("-")) {
 					try {
-						temp = Double.parseDouble(splitExpression.get(i + 1)) * -1;
+						if (splitExpression.get(i + 1).equals("-")) {
+							splitExpression.set(i, "+");	// Ändra tecken
+							splitExpression.remove(i + 1);
+							temp = 0.0;
+							i--;	// Ställer tillbaka pekaren så att den pekar på rätt element nästa iteration
+						} else {
+							temp = Double.parseDouble(splitExpression.get(i + 1)) * -1;
+						}
 					} catch (Exception e) {
-						// TODO: handle exception
+						throw new Exception(e);
 					}
-					splitExpression.set(i + 1, temp.toString());
-					splitExpression.remove(i);
-					i--;	// Ställer tillbaka i så att den pekar på rätt element nästa iteration
+					i++;	// Ställer fram så att den pekar på rätt element nästa iteration
 				} else {
 					if (splitExpression.get(i).equals("+")) {
 						i++;	// Ställer fram i så att den pekar på rätt element nästa iteration
 					}
-					temp = Double.parseDouble(splitExpression.get(i));
+					try {
+						temp = Double.parseDouble(splitExpression.get(i));
+					} catch (Exception e) {
+						throw new Exception(e);
+					}
+
 				}
 				result = result + temp;
 			}
 		}
 
-		//System.out.println("Resultat uträkning = " + result);
+		if (result > Double.MAX_VALUE) {
+			throw new Exception("Overflow");
+		}
 
 		return result.toString();
 	}
@@ -179,17 +227,18 @@ public class Calculator {
 
 	// Division
 	public double divide(double d1, double d2) {
-
 		if (d1 == 0 || d2 == 0) {
-			System.out.println("Division by zero not allowed!");
-			throw new ArithmeticException("Division by zero not allowed!");
+			throw new ArithmeticException();
 		} else return (d1 / d2);
 
 	}
 
-	// Remainder
+	// Modulus, Remainder
 	public double remainder(double d1, double d2) {
-		return (d1 % d2);
+		if (d1 == 0 || d2 == 0) {
+			throw new ArithmeticException();
+		} else return (d1 % d2);
+
 	}
 
 }

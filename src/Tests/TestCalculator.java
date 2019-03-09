@@ -12,17 +12,6 @@ public class TestCalculator {
 
 
 	@Test
-	public void calculateExpression(String expression) {
-
-		// Arrange
-
-		// Act
-
-		// Assert
-	}
-
-
-	@Test
 	public void add_Test() {
 
 		// Arrange

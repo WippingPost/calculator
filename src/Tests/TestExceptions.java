@@ -17,17 +17,23 @@ public class TestExceptions {
 		calculator = new Calculator();
 	}
 
-	@Test ( expected = ArithmeticException.class )
+
+	/*
+	 * Testar metoderna i Calculator för ArithmeticException
+	 */
+	@Test ( expected = ArithmeticException.class)
 	public void divideByZero_Exception() {
 
 		// Arrange
 
 		// Act
 		calculator.divide(10, 0);
-
 		// Assert
 	}
 
+	/*
+	 * Testar metoderna i Calculator för ArithmeticException
+	 */
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 	@Test
