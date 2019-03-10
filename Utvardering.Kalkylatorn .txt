@@ -1,0 +1,36 @@
+
+Angående funktionerna i miniräknaren...
+
+InputHandler.java hanterar de fel som kan härledas till eventuell felaktig inmatning. Direkt felaktiga tecken i inmatningsvariabeln,
+eller om inmatningen börjar eller slutar med ett otillåtet tecken. Det går bra att börja med ett + eller - tecken, men inte * eller % till exempel.
+Vidare tillåter inmatningen att användaren skriv tal med expenenten 'E' i talet. ('E' kan vara var som helst i inmatningsvariabeln, men ett felmeddelande
+kommer att dyka upp om inte ett tillåtet antal exponenter följer efter 'E' (Hanteras av Calculator.java)
+Vidare släpper InputHandler igenom uttryck som t ex. "1//2" och "123**4" (det är ju rätt matematiska tecken),
+men det accepteras INTE när det väl ska räknas ut i calculateExpression()-metoden i Calculator.java, och resulterar i ett felmeddelande via "Exception"-hantering.
+
+Parentes-hantering är inte implementerad, och resulterar i felmeddelande.
+
+Övrig felhantering hanteras av Calculator.java och dess metoder.
+Flera minustecken i följd resulterar i att efterföljande tal blir antingen plus eller minus beroende på hur många minustecken som matas in.
+Flera plustecken i följd eller om plustecken följer direkt efter ett minustecken kommer inte att accepteras.
+Division med noll resulterar i ett ArithmeticException som kastas tillbaka till Main() där felmeddelande visas för användaren.
+Om resultatet av uträkningen överstiger vad datatypen Double kan hantera kastas ett Exception med ett felmeddelande "Overflow" till Main() där ett felmeddelande visas.
+
+
+
+*********************************************************************
+
+Lite tankar kring uppgiften
+
+En filosofi som jag alltid har när jag programmerar, är att användaren inte på något sätt ska kunna få programmet att krascha.
+Så försöker jag alltid att tänka när jag programmerar.
+Med de tankarna i bakhuvudet har jag alltid testat så många olika eventualiteter som möjligt under själva utvecklingsfasen.
+Test Driven Development tar ju det tankesättet till en högre nivå, och jag har verkligen försökt att jobba 
+enligt den filosofin, men det är svårt. Känns lite bakvänt att skriva tester för en icke-existerande kod.
+Jag förstår fördelarna dock med att jobba på detta viset, det gör jag verkligen.
+
+Personligen tror jag att agilt arbetssätt blandat med TDD, är den arbetsmetod som passar mig bäst.
+Bara en reflektion i hur min hjärna fungerar.
+Att man ska skriva tester för att kunna dokumentera att man testat sin kod har jag dock ingenting emot.
+Tvärtom! Jag förespråkar det!
+Men vem vet! Jag kanske blir en inbiten TDD-programmerare i framtiden.
