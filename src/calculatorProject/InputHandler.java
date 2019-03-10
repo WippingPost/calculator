@@ -7,47 +7,48 @@ import java.util.regex.Pattern;
 public class InputHandler {
 
 	Scanner scanner = new Scanner(System.in);
-	String result = "", expression = "";
-	Pattern allowed = Pattern.compile("[^0-9%*/+-]");
-	Pattern allowedEnding = Pattern.compile("[0-9]");
-	Pattern allowedBeginning = Pattern.compile("[-+0-9]");
-	boolean legalinput;
+	String result = "";
+	Pattern allowed = Pattern.compile("[^0-9%*/+-.E]");	// Tillåtna tecken i input String
+	Pattern allowedEnding = Pattern.compile("[0-9]");	// Tillåtna sista tecken i input String
+	Pattern allowedBeginning = Pattern.compile("[-+0-9]");	// Tillåtna tecken första tecken i input String
+	boolean legalInput;
 
-	public String getExpression() {
+	public boolean handleInput(String expression) {
 
-		do {
-			legalinput = false;
-			System.out.println("\nSkriv in ett matematiskt uttryck: ");
-			expression = scanner.nextLine();
+		// Variabler
+		String endCharacter, beginCharacter;
+		endCharacter = "";
+		beginCharacter = "";
+		legalInput = false;
 
-			Matcher hasAllowed = allowed.matcher(expression);
+		// Skapar ett Matcher-objekt för att kolla om inmatning är korrekt
+		Matcher hasAllowed = allowed.matcher(expression);
 
+		// Kollar så det inte är en tom String
+		if (!expression.equals("")) {
 
 			// Kollar så att input inte innehåller felaktiga tecken
-			legalinput = !hasAllowed.find();
+			legalInput = !hasAllowed.find();
 
-			// Kollar så inte tom String
-			if (expression.equals("")) {
-				legalinput = false;
-			} else {
-				String endCharacter = expression.substring(expression.length() - 1);
-				// Kollar så att input inte avslutas med något annat än en siffra
+			if (legalInput) {
+
+				// Vad har vi för tecken i slutet? Kollar så inte nåt annat än en siffra
+				endCharacter = expression.substring(expression.length() - 1);
 				Matcher hasAllowedEnding = allowedEnding.matcher(endCharacter);
-				legalinput = hasAllowedEnding.find();	// True om tecken återfinns i Pattern allowedEnding
+				if (!hasAllowedEnding.find()) {		// True om tecken återfinns i Pattern allowedEnding
+					return false;
+				}
 
 				// Kollar så att input inte börjar med otillåtet tecken
-				String beginCharacter = expression.substring(0, 1);
+				beginCharacter = expression.substring(0, 1);
 				Matcher hasAllowedBeginning = allowedBeginning.matcher(beginCharacter);
-				legalinput = hasAllowedBeginning.find();  // True om tecken återfinns i Pattern allowedBeginning
+				if (!hasAllowedBeginning.find()) {		// True om tecken återfinns i Pattern allowedBeginning
+					return false;
+				}
 			}
+		}
 
-			if (!legalinput) {
-				System.out.println("Felaktigt uttryck '" + expression + "', var god försök igen!");
-			}
-
-		} while (!legalinput);
-
-		return expression;
+		return legalInput;
 
 	}
 }

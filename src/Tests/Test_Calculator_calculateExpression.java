@@ -15,7 +15,7 @@ import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
 @Category(UnitTests.class)
-public class TestWithParameters {
+public class Test_Calculator_calculateExpression {
 
 	Calculator calculator;
 
@@ -47,7 +47,6 @@ public class TestWithParameters {
 			actual = calculator.calculateExpression(expression);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		// Assert
 		assertEquals(expected, actual);
@@ -124,6 +123,37 @@ public class TestWithParameters {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		// Assert
+		assertEquals(expected, actual);
+	}
+
+
+	/*
+	 * Testar Calculator.calculateExpression
+	 * Så att ett "påhittat" Exception ("Overflow") kastas
+	 * om resultatet är större är Double.MAX_VALUE = 1.7976931348623157E308
+	 *
+	 * OBS! Det sista testet i parameterlistan där 1E292 adderas till 1.7976931348623157E308
+	 * verkar vara det lägsta värdet vid addition som triggar Exception overflow.
+	 */
+	@Parameters ({
+		"1.7976931348623157E308*2, Overflow",
+		"1.7976931348623157E308/1E200*1.1E200, Overflow",
+		"1.7976931348623157E308/5*6, Overflow",
+		"1.7976931348623157E308+1E292, Overflow"
+	})
+	@Test
+	public void test_calculateExpression_For_Exception_Overflow(String expression, String expected) {
+
+		// Arrange
+
+		// Act
+		String actual = "";
+		try {
+			actual = calculator.calculateExpression(expression);
+		} catch (Exception e) {
+			actual = e.getMessage();
 		}
 		// Assert
 		assertEquals(expected, actual);
