@@ -6,17 +6,6 @@ public class Calculator {
 
 	private ArrayList<String> splitExpression;
 
-	public static void main(String[] args) {
-
-		Calculator calculator = new Calculator();
-		try {
-			calculator.calculateExpression("10");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
 	public String calculateExpression(String expression) throws Exception{
 
 		splitExpression = new ArrayList<>();
@@ -26,8 +15,6 @@ public class Calculator {
 
 		String[] exp = expression.split("(?<=[*/%+-])");
 
-		//System.out.println("Uttryck efter första split: " + Arrays.toString(exp));
-
 		for (int i = 0; i < exp.length; i++) {
 			String[] temp = exp[i].split("(?=[*/%+-])");
 			splitExpression.add(temp[0]);
@@ -36,9 +23,6 @@ public class Calculator {
 			} catch (Exception e) {
 			}
 		}
-
-		//System.out.println("En första lista: " + splitExpression);
-
 
 
 		// Först kör vi igenom listan och utför multiplikation och/eller division
@@ -152,9 +136,6 @@ public class Calculator {
 				}
 			}
 		}
-
-
-		//System.out.println("Efter multiplikation/division: " + splitExpression);
 
 
 
