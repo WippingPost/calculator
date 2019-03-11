@@ -16,6 +16,12 @@ Flera plustecken i följd eller om plustecken följer direkt efter ett minustecken
 Division med noll resulterar i ett ArithmeticException som kastas tillbaka till Main() där felmeddelande visas för användaren.
 Om resultatet av uträkningen överstiger vad datatypen Double kan hantera kastas ett Exception med ett felmeddelande "Overflow" till Main() där ett felmeddelande visas.
 
+Calculator.calculateExpression() delar först upp input-String i olika delar beroende på vilket tecken som förekommer i input.
+Sedan delas den upp ytterligare för att separera tecken från siffror.
+Alla delarna sparas i en lista där FÖRST multiplikation-, division- och modulusuträkningar görs först. Resultatet av uträkningen ersätter
+de tal som förekommit i uträkningen. Därefter fortsätter uträkningen tills inga multiplikation-, division eller modulusuträkningar kvarstår.
+Det som återstår är en lista med tal som ska adderas ihop. I den processen hanteras dubbla, trippla eller hur många minustecken det eventuellt kan förekomma.
+Och så vidare tills bara ett tal finns kvar, och det blir ju slutresultatet.
 
 
 *********************************************************************
