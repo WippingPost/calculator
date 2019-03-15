@@ -9,6 +9,7 @@ public class Main {
 		Calculator calculator = new Calculator();
 		InputHandler inputHandler = new InputHandler();
 		String result = "", expression = "";
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		boolean legalInput;
 
@@ -28,8 +29,6 @@ public class Main {
 			} while(!legalInput);
 
 			// Hämtar String från InputHandler
-			//expression = inputHandler.getExpression();
-
 
 			try {
 				result = calculator.calculateExpression(expression);
